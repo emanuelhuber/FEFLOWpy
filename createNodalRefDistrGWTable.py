@@ -1,7 +1,7 @@
 # require:
 #    import ifm_contrib as ifm
 #    from ifm import Enum
-#    import math
+import math
 
 def createNodalRefDistrGWTable(doc, name):
     """Create a nodal reference distribution containing the groundwater table
