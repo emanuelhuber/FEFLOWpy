@@ -2,13 +2,15 @@
 
 Note: load FEFLOW file `doc = ifm.loadDocument(FILE_FEM)`
 
-## Number of multilayer wells
+## MLW properties
+
+### Number of multilayer wells
 
 ```py
 doc.getNumberOfMultiLayerWells()
 ```
 
-## find node number corresponding to multilayer well
+### find node number corresponding to multilayer well
 
 ```py
 for node in range(0, doc.getNumberOfNodes()):
@@ -18,7 +20,7 @@ for node in range(0, doc.getNumberOfNodes()):
         print(format(myval))
 ```
 
-## Get info about the multillayer well
+### Get info about the multillayer well
 
 Here `well_node` is the node number (integer) of the multilayer well.
 
@@ -38,7 +40,10 @@ well_info.getTopElevation()
 well_info.getTopNode()
 ```
 
-Get **constant** multilayer well attributes with `getMultiLayerWellAttrValue(int: nID, int: nAttr)`
+## Constant MLW attributes
+
+
+Get **constant** multilayer well attributes with `getMultiLayerWellAttrValue(nID, nAttr)`
 
 * `nID` (*int*) = MLW ID (not related to node index, start at 0)
 * `nAttr`(*int*) = 
@@ -48,4 +53,23 @@ Get **constant** multilayer well attributes with `getMultiLayerWellAttrValue(int
 
 ```py
 doc.getMultiLayerWellAttrValue(0, 0)
+print("current well rate = {} m3/d".format(Q_current))
 ```
+
+Set **constant** multilayer well attributes with `setMultiLayerWellAttrValue(nID, nAttr, dValue)`
+
+* `nID` (*int*) = MLW ID (not related to node index, start at 0)
+* `nAttr`(*int*) = 
+    * `0` = Well rate value [m^3/d].
+    * `1` = Minimum hydraulic head constraint value [m^3/d] or NaN if n/a.
+    * `2` = Maximum hydraulic head constraint value [m^3/d] or NaN if n/a.
+* `dValue` (*double*) = attribute value (be careful sign!)
+
+```py
+Q_well = -2 * 60 * 60 * 24 / 1000 # l/s
+doc.setMultiLayerWellAttrValue(0, 0, Q_well)
+Q_new = doc.getMultiLayerWellAttrValue(0, 0)
+print("new well rate = {} m3/d".format(Q_new))
+```
+
+## Transient MLW attributes
