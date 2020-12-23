@@ -73,3 +73,9 @@ print("new well rate = {} m3/d".format(Q_new))
 ```
 
 ## Transient MLW attributes
+
+Check if transient with `isMultiLayerWellAttrTransient()`
+
+Get attributes with `getMultiLayerWellAttrTSID()`
+
+Set attributes with `setMultiLayerWellAttrTSID()`
