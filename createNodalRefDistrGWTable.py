@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Dec 23 11:58:26 2020
+
+@author: gwm-user
+"""
+
+
 # require:
 #    import ifm_contrib as ifm
 #    from ifm import Enum
@@ -18,7 +26,15 @@ def createNodalRefDistrGWTable(doc, name):
     nothing
     """
     #Here we creating the new User Data for Free Surface Node Distribution
-    doc.createNodalRefDistr(name)
+    if doc.getNodalRefDistrIdByName(name) == -1:
+        doc.createNodalRefDistr(name)
+    else:
+        # if the nodal reference distribution does exist, we delete it
+        # and re-create it!
+        idND = doc.getNodalRefDistrIdByName(name)
+        doc.deleteNodalRefDistr(idND)
+        doc.createNodalRefDistr(name)
+
     idND = doc.getNodalRefDistrIdByName(name)
     #print 'Number of nodes: ' + str(doc.getNumberOfNodesPerSlice())
     #print 'Number of Slices: ' + str(doc.getNumberOfSlices())
@@ -47,4 +63,5 @@ def createNodalRefDistrGWTable(doc, name):
             if(math.isnan(p_prev) and p>=0):
                 #check if previous slice was inactive
                 doc.setNodalRefDistrValue(idND,ND,doc.getResultsFlowHeadValue(node))
+
 
