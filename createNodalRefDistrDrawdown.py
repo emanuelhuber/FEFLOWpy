@@ -9,7 +9,6 @@ Created on Wed Dec 23 11:58:26 2020
 # require:
 #    import ifm_contrib as ifm
 #    from ifm import Enum
-import math
 
 def createNodalRefDistrDrawdown(doc, name0, name1, name_new):
     """Create a nodal reference distribution containing the groundwater table
@@ -30,7 +29,15 @@ def createNodalRefDistrDrawdown(doc, name0, name1, name_new):
     -------
     nothing
     """
-    doc.createNodalRefDistr(name_new)
+    if doc.getNodalRefDistrIdByName(name_new) == -1:
+        doc.createNodalRefDistr(name_new)
+    else:
+        # if the nodal reference distribution does exist, we delete it
+        # and re-create it!
+        idND = doc.getNodalRefDistrIdByName(name_new)
+        doc.deleteNodalRefDistr(idND)
+        doc.createNodalRefDistr(name_new)
+    
     idND_new = doc.getNodalRefDistrIdByName(name_new)
         
     idND1 = doc.getNodalRefDistrIdByName(name1)
@@ -47,4 +54,5 @@ def createNodalRefDistrDrawdown(doc, name0, name1, name_new):
             val = doc.getNodalRefDistrValue(idND0, k) - val1
         doc.setNodalRefDistrValue(idND_new, k, val)
         
+
 
