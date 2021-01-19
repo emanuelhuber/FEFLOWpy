@@ -10,7 +10,9 @@ Note: load FEFLOW file `doc = ifm.loadDocument(FILE_FEM)`
 doc.getNumberOfMultiLayerWells()
 ```
 
-### find node number corresponding to multilayer well
+### Find node numbers corresponding to multi-layer wells
+
+See also the self-made function `getWellNodes()`
 
 ```py
 well_node = []
