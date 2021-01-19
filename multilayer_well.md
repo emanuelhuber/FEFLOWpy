@@ -13,11 +13,11 @@ doc.getNumberOfMultiLayerWells()
 ### find node number corresponding to multilayer well
 
 ```py
+well_node = []
 for node in range(0, doc.getNumberOfNodes()):
-    myval = doc.getBcFlowType(node)
-    if myval == 4:
-        well_node = node
-        print(format(myval))
+    node_val = doc.queryMultiLayerWellInfo(node)
+        if node_val != None:
+            well_node.append(node)
 ```
 
 ### Get info about the multillayer well
