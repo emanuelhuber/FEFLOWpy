@@ -1,8 +1,42 @@
-# Multilayer well (MLW)
+# Well and multi-layer wells(MLW)
 
 Note: load FEFLOW file `doc = ifm.loadDocument(FILE_FEM)`
 
+## Well and MLW Nodes
+
+* Get the well and MLW nodes with the self-made function `getWellNodes()`
+* Get the flow budget:
+    ```py
+    doc.startSimulator(FILE_DAC, 0)
+    well_nodes = getWellNodes(doc)
+    bdgt = doc.budgetCompute(0, well_nodes[0] + well_nodes[1], True)
+    # bdgt[11] for extraction; bdgt[10] for injection... ????
+    Q_eff = (bdgt[11] + bdgt[10])* 1000 / (24 * 3600)
+    ```
+
+## Singel Wells
+
+* Get flow rate:
+    ```py
+    doc.getBcFlowValue(node)
+    ```
+* Set flow rate *Q*:
+    ```py
+    doc.setBcFlowValueAtCurrentTime(node, Q)
+    ```
+* Get constraint (here min-head constraint):
+    ```py
+    doc.getBccFlowValue(node, 0)
+    ```
+* Set constraint (here min-head constraint *h*):
+    ```py
+    doc.setBccFlowValueAtCurrentTime(node,  h, 0)
+    ```
+      
+
 ## MLW properties
+
+Note: the MLW have an indexing not based on the node number but on the number of MLW (indexing start at 0).
 
 ### Number of multilayer wells
 
@@ -10,19 +44,7 @@ Note: load FEFLOW file `doc = ifm.loadDocument(FILE_FEM)`
 doc.getNumberOfMultiLayerWells()
 ```
 
-### Find node numbers corresponding to multi-layer wells
-
-See also the self-made function `getWellNodes()`
-
-```py
-well_node = []
-for node in range(0, doc.getNumberOfNodes()):
-    node_val = doc.queryMultiLayerWellInfo(node)
-        if node_val != None:
-            well_node.append(node)
-```
-
-### Get info about the multillayer well
+### Get *geometry* info about the multillayer well
 
 Here `well_node` is the node number (integer) of the multilayer well.
 
@@ -42,7 +64,14 @@ well_info.getTopElevation()
 well_info.getTopNode()
 ```
 
-## Constant MLW attributes
+Get the coordinates of the MLW *i* (indexing start at *0*):
+
+```py
+MLW_node = doc.getMultiLayerWellTopNode(i)
+MLW_xy = [doc.getX(MLW_node), doc.getY(MLW_node)]
+```
+
+### Constant MLW attributes
 
 
 Get **constant** multilayer well attributes with `getMultiLayerWellAttrValue(nID, nAttr)`
@@ -74,7 +103,7 @@ Q_new = doc.getMultiLayerWellAttrValue(0, 0)
 print("new well rate = {} m3/d".format(Q_new))
 ```
 
-## Transient MLW attributes
+### Transient MLW attributes
 
 Check if transient with `isMultiLayerWellAttrTransient()`
 
