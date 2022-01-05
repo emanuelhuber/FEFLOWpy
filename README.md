@@ -17,3 +17,22 @@ Get the list of IFM model properties:
 ```py
 dir(ifm.Enum)
 ```
+
+### List of Parameter Values
+
+Available functions:
+
+```py
+getParamSize()
+getParamValue()
+getParamValues()
+setParamValue()
+setParamValues()
+enableParamRecording()
+```
+
+## BC conditions
+```py
+{c: getattr(ifm.Enum, c) for c in dir(ifm.Enum) if c.startswith("P_BC")}
+```
+
